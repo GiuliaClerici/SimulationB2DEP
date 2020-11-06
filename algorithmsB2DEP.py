@@ -2,6 +2,7 @@ import numpy as np
 from collections import OrderedDict
 
 
+
 def banditRanker(arms, k):
     new_mean = 0
     sample = 0
