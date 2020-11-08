@@ -22,6 +22,11 @@ for i in range(5):
     means = np.append(means, mean)
 
 print(means)
+
+v = 1
+print(2**1)
+print(2** -v )
+print(-v)
 #for i in p.keys():
 #    print("i: ", i)
 #    for l in p.keys():
