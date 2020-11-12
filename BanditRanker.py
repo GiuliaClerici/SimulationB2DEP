@@ -88,6 +88,12 @@ def banditRanker(arms, k):
 
     for a in range(k):
         arms[a]._mean = storedArms[a]
+
+    for i in range(k):
+        arms[i]._delay = list(activeArms.keys())[i] + 1
+        if i == k-1:
+            arms[i]._delay = k-1
+
     return arms
 
 

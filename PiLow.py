@@ -67,5 +67,5 @@ def piLow(arms, k, horizon):
         # print(actPol)
     print("Quante policy restituite da PiLow? ", actPol.size)
     print("La ghost policy è quella che cicla sulle prime ", ghost + 1, " azioni, ossia sulle azioni 0 - ... -  ", ghost)
-
+    return ghost
 

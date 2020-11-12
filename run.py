@@ -22,6 +22,7 @@ def main():
 
     #chiamo il primo algoritmo di ordinamento delle azioni
     orderedArms = banditRanker(armsSet, k) # sistemare tuning di epsilon
+
     #chiamo il secondo algoritmo ad eliminazione che restituisce l'insieme di policy ottime
     piLow(orderedArms, k, horizon) # sistemare tuning di S nella costante C quando confronto i g(m)
 
