@@ -20,11 +20,8 @@ class Arms():
         return (expectedReward, bernoulli.rvs(expectedReward, random_state=rep_index)) # restituisco media (baseline o affetta da delay) e reward Bernoulliano in {0,1}, in base alla media - non mi piace come funziona
         #scipy.random.binomial(n=1, p=expectedReward)) # parameters: number of trials, probability - #
 
-    def updateState(self, t, flag): # flag = è stata appena campionata l'azione?
-        if flag == 0:
-            self._state = self._state + 1
-        else:
-            self._state = 1
+    def updateState(self): # non valuto il caso dell'azione appena giocata perché lì lo stato viene già aggiornato con sampleReward
+        self._state = self._state + 1
         return self._state
 
 
