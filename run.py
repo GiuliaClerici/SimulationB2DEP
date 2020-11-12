@@ -9,10 +9,11 @@ from PiLow import  piLow
 
 
 def main():
-    armsSet = {}
-    #armsSet = [Arms(mean=i/10, delay=i, gamma=0.4) for i in range(10)]
     horizon = 810000 # orizzonte
     k = 10 # numero di azioni
+    armsSet = {}
+    # armsSet = [Arms(mean=i / 10, delay=i - 1, gamma=0.5, state=0) for i in range(10, 0, -1)]
+    # armsSet[9]._delay = 1
     armsSet = [Arms(mean=random.uniform(0, 1), delay=i+1, gamma=0.5, state=0) for i in range(k)] # genero un'istanza di Arms (dunque un'azione) con media, parametro di delay, gamma e stato
     #for x in range(10):
     #    print(armsSet[x]._mean) # ricorda che qui la prima azione è 0, non 1
