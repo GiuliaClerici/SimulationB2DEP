@@ -10,11 +10,13 @@ def banditRanker(arms, k):
     delInd = np.array([]) # indici di azioni da eliminare dall'insieme di azioni attive e riporre in storedArms, azioni le cui medie sono fissate, non hanno overlap con le adiacenti
     armskeys = np.array(list(activeArms.keys())) # indici delle azioni nell'insieme di azioni attive
     eps_r = 0.009  # imposto il valore di epsilon - INDICATIVO PER ORA, SOLO PER TEST!!!
+    delays = np.empty(k)
 
     print("medie iniziali------------ ") # stampo i valori iniziali delle medie
     for x in range(k): # per ogni azione
         print("azione", x, "con media:", arms[x]._mean) # stampo la media
         activeArms[x] = arms[x]._mean # aggiungo la media di tale azione all'insieme di azioni attive
+        delays[x] = arms[x]._delay
 
     armskeys = np.array(list(activeArms.keys()))
 
@@ -36,7 +38,7 @@ def banditRanker(arms, k):
             sample = 0 # risetto la variabile a 0 per la prossima azione
 
         # ORDINO LE MEDIE
-        activeArms = {k: v for k, v in sorted(activeArms.items(), key=lambda item: item[1], reverse=True)} # ordino le medie delle azioni attive sorted prende dict ma mi restituisce list, mentre così ho ancora dict
+        activeArms = {key: value for key, value in sorted(activeArms.items(), key=lambda item: item[1], reverse=True)} # ordino le medie delle azioni attive sorted prende dict ma mi restituisce list, mentre così ho ancora dict
 
         # FASE DI CONTROLLO DELL'OVERLAP CON LE MEDIE ADIACENTI
         Kmin = 1.0 # inizializzo variabili per confronto
@@ -86,13 +88,12 @@ def banditRanker(arms, k):
             storedArms = np.append(storedArms, activeArms[armskeys[j]])
     storedArms = np.sort(storedArms)[::-1]
 
+    print("stored: ", storedArms)
+    indDelay = [u for u, v in activeArms.items()]
+    print("active: ", activeArms)
     for a in range(k):
         arms[a]._mean = storedArms[a]
-
-    for i in range(k):
-        arms[i]._delay = list(activeArms.keys())[i] + 1
-        if i == k-1:
-            arms[i]._delay = k-1
+        arms[a]._delay = delays[indDelay[a]]
 
     return arms
 
