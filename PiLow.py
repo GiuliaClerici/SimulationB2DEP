@@ -18,7 +18,7 @@ def piLow(arms, k, horizon):
     while (s <= horizon):  # finché il numero di pull non  supera l'orizzonte -METTO 0 SOLO PER I TEST, POI DEVO METTERE HORIZON
         # print("n: ", n)
         for m in range(actPol.size):  # gioca ogni policy nell'insieme di policy attive
-            print(actPol.size)
+            #print(actPol.size)
             # print(" nuova policy m: ", m)
             # print("verrà giocata per volte: ", int(((horizon**(1-2**(-(n+1)))) / ((m+1) * 10))) + 1 )
             sum = 0
@@ -42,9 +42,9 @@ def piLow(arms, k, horizon):
                             # print("azione: ", i , "stato: ", arms[i]._state)
             g[m] = sum / j  # calcolo g(m) - dove j è  ((horizon**(1-2**(-n))) / (m * actPol.size)) + 1 - tra l'altro ad ogni round aggiorno g(m) della policy che cicla su m, per quelle eliminate rimane l'ultima g(m) calcolata prima dell'eliminazione
             s += int(((horizon**(1-2**(-(n+1)))) / ((m+1) * 10))) + 1 # calcolo numero di round
-        print("le diverse g(m): ", g)
-        c = (0.5 * round(sqrt(log((((horizon ** (1 - 2 ** (-(n + 1)))) + k) * k * 2) / delta) * (k / (2 * (horizon ** (1 - 2 ** (-(n + 1))))))),rounding))  # confidence gap che utilizzo per valutare quali policy eliminare
-        print("c gap: ", c)
+        #print("le diverse g(m): ", g)
+        c = (0.5 * round(sqrt(log((((horizon ** (1 - 2 ** (-(n + 1)))) + k) * k * 2) / delta) * (k / (2 * (horizon ** (1 - 2 ** (-(n + 1))))))), rounding))  # confidence gap che utilizzo per valutare quali policy eliminare
+        #print("c gap: ", c)
         for i in range(m + 1):  # per ogni policy attiva
             # print("i: ", i)
             # print("g(i): ", g[i])
@@ -52,8 +52,8 @@ def piLow(arms, k, horizon):
             if g[i] < np.max(g) - 2 * c and i != np.argmax(g):  # se g(m) di tale policy è minore di max g(m) di un certo gap
                 # print("i in if: ", i)
                 ind = np.append(ind, i)
-        print("g ind: ", ind)
-        print("g max: ", np.max(g))
+        #print("g ind: ", ind)
+        #print("g max: ", np.max(g))
         actPol = np.delete(actPol, ind.astype(int))  # elimino tale policy dall'insieme delle policy attive
         g = np.delete(g, ind.astype(int))
         delInd = np.array([b for b in range(ind.size)])  # array di indici delle azioni da eliminare che mi serve al passo successivo
@@ -62,10 +62,10 @@ def piLow(arms, k, horizon):
         #s = s + 1
         if actPol.size == 1:
             ghost = actPol
-            print("ghost: ", actPol)
+            print("ghost: Pi", int(actPol))
             break
         # print(actPol)
-    print("Quante policy restituite da PiLow? ", actPol.size)
+    #print("Quante policy restituite da PiLow? ", actPol.size)
     print("La ghost policy è quella che cicla sulle prime ", ghost + 1, " azioni, ossia sulle azioni 0 - ... -  ", ghost)
     return ghost
 

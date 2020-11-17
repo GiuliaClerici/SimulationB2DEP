@@ -1,6 +1,6 @@
 import numpy as np
 from collections import OrderedDict
-
+from math import sqrt, log
 
 def banditRanker(arms, k):
     new_mean = 0
@@ -11,6 +11,8 @@ def banditRanker(arms, k):
     armskeys = np.array(list(activeArms.keys())) # indici delle azioni nell'insieme di azioni attive
     eps_r = 0.009  # imposto il valore di epsilon - INDICATIVO PER ORA, SOLO PER TEST!!!
     delays = np.empty(k)
+    rounding = 5
+    delta = 0.1
 
     print("medie iniziali------------ ") # stampo i valori iniziali delle medie
     for x in range(k): # per ogni azione
@@ -44,6 +46,8 @@ def banditRanker(arms, k):
         Kmin = 1.0 # inizializzo variabili per confronto
         Kplus = 0.0 # inizializzo variabili per confronto
         j = 0
+
+        #eps_r = round(sqrt(log((2 * k * (r + 1) * (r + 2)) / (delta)) * (1 / (10 * (r + 1)))), rounding)
 
         if r == 0:
             armskeys = np.array(list(activeArms.keys()))
@@ -80,6 +84,7 @@ def banditRanker(arms, k):
         eps_r -= 0.001 # INDICATIVO PER ORA, SOLO PER TEST!!!
         if eps_r < 0.0:
             eps_r = 0.000000001
+
         #if r == 0:
         #    armskeys = armskeys[::-1]
 
@@ -88,9 +93,9 @@ def banditRanker(arms, k):
             storedArms = np.append(storedArms, activeArms[armskeys[j]])
     storedArms = np.sort(storedArms)[::-1]
 
-    print("stored: ", storedArms)
+    #print("stored: ", storedArms)
     indDelay = [u for u, v in activeArms.items()]
-    print("active: ", activeArms)
+    #print("active: ", activeArms)
     for a in range(k):
         arms[a]._mean = storedArms[a]
         arms[a]._delay = delays[indDelay[a]]
