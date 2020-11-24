@@ -79,6 +79,53 @@ def main():
     gdelay = rewardPoliciesDelay(gdelay, armsSet, k)
     print("gdelay: ", gdelay)
 
+    ''' 
+    # calcolo g(m) inizializzando io gli stati uguali a m, senza farlo fare nel ciclo, come invece avviene nella funzione gMPolicies
+    def rewardPoliciesDelayGm(gdelay, m, k):
+        for i in range(k):
+            t = 0
+            sum = 0
+            for j in range(i+1):
+                m[j]._state = i+1
+            while(t <= i):
+                #print("campiono azione ", t, "con stato ", m[t]._state)
+                r, sample = m[t].sampleReward(rep_index=0)
+                sum += r
+                t += 1
+            gdelay[i] = round(sum / (i + 1), 5)
+        return gdelay
+    
+    gm = np.empty(k)
+    gdelay = rewardPoliciesDelayGm(gm, armsSet, k)
+    print("gm: ", gdelay)
+    '''
+
+    # seconda funzione per confronto che abbia stesso risultato di quella sopra
+    def gMPolicies(gdelay, m, k):
+        for i in range(k):
+            t = 0
+            sum = 0
+            for j in range(i+1):
+                r, sample = m[j].sampleReward(rep_index=0)
+                for x in range(i):
+                    if x != j:
+                        m[x].updateState()
+            while(t <= i):
+                #print("campiono azione ", t, "con stato ", m[t]._state)
+                r, sample = m[t].sampleReward(rep_index=0)
+                for z in range(i+1):
+                    if z != t:
+                        m[z].updateState()
+                sum += r
+                t += 1
+            gdelay[i] = round(sum / (i + 1), 5)
+        return gdelay
+
+
+    gm = np.empty(k)
+    gm = gMPolicies(gm, armsSet, k)
+    print("prova: ", gm)
+
     # calcolo reward dopo campionamento
 
     #chiamo il primo algoritmo di ordinamento delle azioni
@@ -88,8 +135,6 @@ def main():
     #    print(orderedArms[i]._delay)
     #chiamo il secondo algoritmo ad eliminazione che restituisce l'insieme di policy ottime
     #piLow(orderedArms, k, horizon) # sistemare tuning di S nella costante C quando confronto i g(m)
-
-
 
 
 # Press the green button in the gutter to run the script.
